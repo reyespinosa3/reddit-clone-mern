@@ -1,27 +1,53 @@
-var models = require('../models');
-var TextPost = models.TextPost;
+const models = require('../models');
+const TextPost = models.TextPost;
 
-function index(req, res) {
+const index = (req, res) => {
   TextPost.find({}, function(err, textPosts) {
     if (err) res.send(err);
     else res.json(textPosts);
   });
 }
 
-function create(req, res) {
-  
+const create = (req, res) => {
+  let newPost = newTextPost(req.body);
+  newPost.save((err, model) => {
+    if (err) {
+      res.send(err);
+    }
+    res.json(model);
+  })
 }
 
-function show(req, res) {
-
+const show = (req, res) => {
+  TextPost.find({_id: req.params.post_id}, (err, textPost) => {
+    if (err) {
+      res.send(err);
+    }
+    res.json(textPost);
+  })
 }
 
-function update(req, res) {
-
+const update = (req, res) => {
+  TextPost.findOne({_id: req.params.post_id}, (err, textPost) => {
+    textPost.title = req.body.title;
+    textPost.content = req.body.content;
+    textPost.upVotes = req.body.upVotes;
+    textPost.downVotes = req.body.downVotes;
+    textPost.save((err, saved) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+    });
+  })
 }
 
-function destroy(req, res) {
-
+const destroy = (req, res) => {
+  TextPost.findByIdAndRemove(req.params.post_id, (err, textPost) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.status(200).send(textPost);
+  });
 }
 
 module.exports.index = index;
