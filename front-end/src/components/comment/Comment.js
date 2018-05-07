@@ -1,16 +1,16 @@
 // create your comment component here
 import React, { Component } from 'react';
+import './Comment.css';
 
 
-
-class App extends Component {
+class Comment extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="Comment">
       <h1> This is the Comment Component </h1>
       </div>
     );
   }
 }
 
-export default App;
+export default Comment;
