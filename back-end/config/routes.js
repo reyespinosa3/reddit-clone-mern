@@ -21,15 +21,10 @@ router.put('/api/posts/:post_id', textPostsController.update);
 router.delete('/api/posts/:post_id', textPostsController.destroy);
 
 //Comment Routes
-//get comments from specific post
-router.get('/api/posts/:post_id/comments', commentsController.index);
 //create new comment for specific post
 router.post('/api/posts/:post_id/comments', commentsController.create);
-//get specific comment from specific post
-router.get('/api/posts/:post_id/comments/:comment_id', commentsController.show);
 //update specific comment on specific post
 router.put('/api/posts/:post_id/comments/:comment_id', commentsController.update);
-//delete specific comment from specific post
-router.delete('/api/posts/:post_id/comments/:comment_id', commentsController.destroy);
+
 
 module.exports = router;

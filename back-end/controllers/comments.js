@@ -1,35 +1,21 @@
 const models = require('../models');
 const Comment = models.Comment;
-
-const index = (req, res) => {
-  models.TextPost.find({_id: req.params.post_id}, (err, textPost) => {
-    if (err) {
-      res.send(err);
-    }
-    res.json(textPost.comments);
-  })
-}
-
-const show = (req, res) => {
-  Comment.find({_id: req.params.comment_id}, (err, comment) => {
-    if (err) {
-      res.send(err);
-    }
-    res.json(comment);
-  })
-}
+const TextPost = models.TextPost;
 
 const create = (req, res) => {
-  let newComment = new Comment(req.body);
-  newComment.save();
-  models.TextPost.findByIdAndUpdate(req.params.post_id,
-    {$push: {comments: newComment}},
-    {safe: true, upsert: true, new: true}, (err, textpost) => {
-    if (err) {
-      res.status(500).send(err);
+  Comment.create(req.body, function(err, comment){
+    if (err) res.end(err);
+    else {
+      TextPost.findById(req.params.post_id, function(err, post) {
+        if (err) res.send(err);
+        else {
+          post.comments.push(comment);
+          post.save();
+          res.json(comment);
+        }
+      })
     }
-    res.status(200).send(newComment);
-  })
+  });
 }
 
 const update = (req, res) => {
@@ -41,34 +27,19 @@ const update = (req, res) => {
       }
     });
   });
-  models.TextPost.findOne({_id: req.params.post_id}, (err, foundPost) => {
-    let foundComment = foundPost.comments.id(req.params.comment_id);
-    foundComment.text = req.body.text;
-    foundPost.save((err, saved) => {
+  TextPost.findOne({_id: req.params.post_id}, (err, postFound) => {
+    let commentFound = postFound.comments.id(req.params.comment_id);
+    commentFound.text = req.body.text;
+    postFound.save((err, saved) => {
       if (err) {
         res.status(500).send(err);
       }
-      res.json(foundComment);
+      res.json(commentFound);
     });
   });
 }
 
-const destroy = (req, res) => {
-  Comment.remove({_id: req.params.comment_id}, (err, comment) => {
-    if (err) {
-      console.log('error removing comment from db');
-      res.status(500).send(err);
-    }
-  })
-  models.TextPost.findOneAndUpdate({ _id: req.params.post_id },
-  { $pull: { comments: { _id: req.params.comment_id}}}, (err, model) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    res.status(200).send(model);
-  })
-}
+
 
 module.exports.create = create;
 module.exports.update = update;
-module.exports.destroy = destroy;
