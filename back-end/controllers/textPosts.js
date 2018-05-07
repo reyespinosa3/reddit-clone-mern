@@ -31,8 +31,6 @@ const update = (req, res) => {
   TextPost.findOne({_id: req.params.post_id}, (err, textPost) => {
     textPost.title = req.body.title;
     textPost.content = req.body.content;
-    textPost.upVotes = req.body.upVotes;
-    textPost.downVotes = req.body.downVotes;
     textPost.save((err, saved) => {
       if (err) {
         res.status(500).send(err);

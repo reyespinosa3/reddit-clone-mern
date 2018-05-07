@@ -1,6 +1,6 @@
 // create your text post component here
 import React, { Component } from 'react';
-
+import './TextPost.css';
 
 
 class App extends Component {

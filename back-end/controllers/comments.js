@@ -35,8 +35,6 @@ const create = (req, res) => {
 const update = (req, res) => {
   Comment.findOne({_id: req.params.comment_id}, (err, comment) => {
     comment.text = req.body.text;
-    comment.upVotes = req.body.upVotes;
-    comment.downVotes = req.body.downVotes;
     comment.save((err, saved) => {
       if (err) {
         res.status(500).send(err);
@@ -46,8 +44,6 @@ const update = (req, res) => {
   models.TextPost.findOne({_id: req.params.post_id}, (err, foundPost) => {
     let foundComment = foundPost.comments.id(req.params.comment_id);
     foundComment.text = req.body.text;
-    foundComment.upVotes = req.body.upVotes;
-    foundComment.downVotes = req.body.downVotes;
     foundPost.save((err, saved) => {
       if (err) {
         res.status(500).send(err);
