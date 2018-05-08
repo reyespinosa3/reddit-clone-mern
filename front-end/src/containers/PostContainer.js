@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Header from '../components/Header/Header';
 import TextPost from '../components/textPost/TextPost';
 import TextPostModel from '../models/TextPost';
 
@@ -37,6 +38,8 @@ class PostContainer extends Component {
 
     return (
       <div className="PostContainer">
+        <Header />
+        <h1>Here are the latest posts</h1>
         {this.state.posts}
       </div>
     )

@@ -15,10 +15,3 @@ class App extends Component {
 }
 
 export default App;
-
-// {/* <header className="App-header">
-//   <h1 className="App-title">My Reddit Clone App</h1>
-//   <h2 className="App-blurb">Below will display Posts and Comments</h2>
-// </header>
-// <TextPost />
-// <Comment /> */}
